@@ -69,7 +69,7 @@ const HeroSection = () => {
             transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
             className="flex justify-center lg:justify-center"
           >
-            <div className="w-full max-w-[400px] aspect-square flex items-center justify-center">
+            <div className="w-full max-w-[500px] aspect-square flex items-center justify-center">
               <OptimizedImage
                 src={signflowLogo}
                 alt="SignFlow Logo"
