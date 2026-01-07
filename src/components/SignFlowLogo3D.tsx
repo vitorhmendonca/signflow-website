@@ -2,7 +2,7 @@ import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { useTexture, Float } from "@react-three/drei";
 import { useRef, useState, useEffect } from "react";
 import * as THREE from "three";
-import signflowLogo from "@/assets/signflow-logo-square.png";
+import signflowLogo from "@/assets/signflow-logo-3d.png";
 
 interface LogoMeshProps {
   mousePosition: { x: number; y: number };
@@ -12,10 +12,10 @@ const LogoMesh = ({ mousePosition }: LogoMeshProps) => {
   const meshRef = useRef<THREE.Group>(null);
   const texture = useTexture(signflowLogo);
   const { viewport } = useThree();
-  
+
   // Target rotation based on mouse
   const targetRotation = useRef({ x: 0, y: 0 });
-  
+
   useEffect(() => {
     // Configure texture for transparency
     texture.colorSpace = THREE.SRGBColorSpace;
@@ -23,11 +23,11 @@ const LogoMesh = ({ mousePosition }: LogoMeshProps) => {
 
   useFrame((state, delta) => {
     if (!meshRef.current) return;
-    
+
     // Update target rotation based on mouse position
     targetRotation.current.x = mousePosition.y * 0.25;
     targetRotation.current.y = mousePosition.x * 0.25;
-    
+
     // Smooth interpolation to target rotation
     meshRef.current.rotation.x = THREE.MathUtils.lerp(
       meshRef.current.rotation.x,
@@ -78,11 +78,11 @@ const SignFlowLogo3D = () => {
     const rect = containerRef.current.getBoundingClientRect();
     const centerX = rect.left + rect.width / 2;
     const centerY = rect.top + rect.height / 2;
-    
+
     // Normalize to -1 to 1 range
     const x = (e.clientX - centerX) / (rect.width / 2);
     const y = -(e.clientY - centerY) / (rect.height / 2);
-    
+
     setMousePosition({ x: Math.max(-1, Math.min(1, x)), y: Math.max(-1, Math.min(1, y)) });
   };
 
