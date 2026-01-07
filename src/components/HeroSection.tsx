@@ -1,11 +1,14 @@
 import { Send, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
+import { lazy, Suspense, useState, useEffect } from "react";
 import { scrollToContact } from "@/lib/utils";
-import signflowLogo from "@/assets/signflow-logo-square.png";
-import OptimizedImage from "./OptimizedImage";
+
+const SignFlowLogo3D = lazy(() => import("./SignFlowLogo3D"));
 
 const HeroSection = () => {
+  const [shouldLoad3D, setShouldLoad3D] = useState(false);
+
   const scrollToAbout = () => {
     const aboutSection = document.getElementById('about');
     if (aboutSection) {
@@ -19,6 +22,17 @@ const HeroSection = () => {
       });
     }
   };
+
+  useEffect(() => {
+    // Defer 3D component loading until after initial paint to reduce main-thread blocking
+    if ('requestIdleCallback' in window) {
+      const id = window.requestIdleCallback(() => setShouldLoad3D(true), { timeout: 2000 });
+      return () => window.cancelIdleCallback(id);
+    } else {
+      const timer = setTimeout(() => setShouldLoad3D(true), 100);
+      return () => clearTimeout(timer);
+    }
+  }, []);
 
   return (
     <section className="hero-gradient pt-16 relative">
@@ -62,19 +76,19 @@ const HeroSection = () => {
             </div>
           </motion.div>
 
-          {/* Right Content - Static Logo */}
+          {/* Right Content - True 3D Logo */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
             className="flex justify-center lg:justify-center"
           >
-            <div className="w-full max-w-[500px] aspect-square flex items-center justify-center">
-              <OptimizedImage
-                src={signflowLogo}
-                alt="SignFlow Logo"
-                className="w-full h-full object-contain drop-shadow-2xl"
-              />
+            <div className="w-full h-[350px] lg:h-[450px]">
+              {shouldLoad3D && (
+                <Suspense fallback={<div className="w-full h-full" />}>
+                  <SignFlowLogo3D />
+                </Suspense>
+              )}
             </div>
           </motion.div>
         </div>

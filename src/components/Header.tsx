@@ -124,7 +124,7 @@ const Header = () => {
                   e.preventDefault();
                   window.scrollTo({ top: 0, behavior: "smooth" });
                 }}
-                className={`text-xl font-bold tracking-tight transition-colors cursor-pointer ${isHomePage || isScrolled ? "text-white" : "text-foreground"
+                className={`text-[1.25rem] font-bold tracking-tight transition-colors cursor-pointer ${isHomePage || isScrolled ? "text-white" : "text-foreground"
                   }`}
               >
                 SignFlow
@@ -144,7 +144,7 @@ const Header = () => {
                   e.preventDefault();
                   window.scrollTo({ top: 0, behavior: "smooth" });
                 }}
-                className={`text-xl font-bold tracking-tight transition-colors cursor-pointer ${isHomePage || isScrolled ? "text-white" : "text-foreground"
+                className={`text-[1.25rem] font-bold tracking-tight transition-colors cursor-pointer ${isHomePage || isScrolled ? "text-white" : "text-foreground"
                   }`}
               >
                 SignFlow
