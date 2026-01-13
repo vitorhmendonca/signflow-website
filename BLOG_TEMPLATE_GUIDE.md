@@ -38,10 +38,15 @@
   author: "SignFlow Team",
   date: "2026-01-20",
   readTime: 7,
-  category: "Industry Insights",
-  tags: ["signage", "marketing"],
-  featuredImage: "/path-to-image.jpg",
-  ogImage: "/path-to-og-image.jpg",
+  category: "Category Name", // e.g., "Marketing Tips" or "Industry Insights"
+  tags: ["Tag1", "Tag2"],
+  tldr: [
+    "Key takeaway point 1",
+    "Key takeaway point 2",
+    "Key takeaway point 3"
+  ],
+  featuredImage: "/path/to/image.jpg",
+  ogImage: "/path/to/image.jpg",
   content: {
     introduction: "Your opening paragraph here...",
     sections: [

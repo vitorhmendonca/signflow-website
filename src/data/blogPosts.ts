@@ -5,11 +5,16 @@ export const blogPosts: BlogPost[] = [
     slug: "how-to-create-videos-for-sign-companies",
     title: "How to Create Engaging Videos for Your Sign Company",
     description: "Create professional sign company videos with just your smartphone. Get proven filming tips, equipment recommendations, and marketing strategies to attract more clients. Start today!",
-    author: "SignFlow Team",
+    author: "Vitor Hugo",
     date: "2026-01-12",
     readTime: 10,
     category: "Marketing Tips",
     tags: ["Video Marketing", "Content Creation", "Social Media"],
+    tldr: [
+      "You don't need expensive gear—your smartphone is powerful enough to film professional sign installations.",
+      "Focus on 5 key video types: Time-lapses, Before/Afters, Walkthroughs, Behind-the-Scenes, and Testimonials.",
+      "Consistency beats perfection. Post 2-3 times a week on Instagram/Facebook to see real lead generation results."
+    ],
     featuredImage: "/blog-video-production.png",
     ogImage: "/blog-video-production.png",
     content: {
@@ -37,7 +42,7 @@ export const blogPosts: BlogPost[] = [
         },
         {
           headline: "Where to Share Your Videos for Maximum Impact",
-          body: "Creating great videos is only half the battle—you need to get them in front of potential clients. Here's where to share your content:\n\nInstagram & Facebook: Perfect for short-form content (Reels and Stories). Post 3-5 times per week for best results.\n\nYouTube: Your video portfolio. Upload longer project walkthroughs and create playlists by project type (storefront signs, vehicle wraps, etc.).\n\nYour Website: Add videos to your homepage, portfolio page, and service pages. Videos increase time-on-site and conversion rates.\n\nGoogle Business Profile: Upload videos directly to your Google listing. This helps you stand out in local search results.\n\nLinkedIn: Share professional content and case studies. Great for reaching commercial clients and property managers.\n\nEmail Marketing: Include video thumbnails in your newsletters. Videos increase email click-through rates by 300%.",
+          body: "Creating great videos is only half the battle—you need to get them in front of potential clients. Here's where to share your content:\n\nInstagram & Facebook: Perfect for short-form content (Reels and Stories). Post 3-5 times per week for best results.\n\nYouTube: Your video portfolio. Upload longer project walkthroughs and create playlists by project type (storefront signs, vehicle wraps, etc.).\n\nYour Website: Add videos to your homepage, portfolio page, and service pages. Videos increase time-on-site and conversion rates.\n\nGoogle Business Profile: Upload videos directly to your Google listing. This helps you stand out in local search results.\n\nLinkedIn: Share professional content and case studies. Great for reaching commercial clients and property managers.\n\nEmail Marketing: Include video thumbnails in your newsletters. Videos increase email click-through rates by 300%.\n\nWant to know what else drives traffic? Check out our guide on <a href='/blog/why-ai-free-lead-generation-works-for-sign-companies' class='text-primary underline hover:text-primary/80'>why qualified leads matter more than volume</a>.",
           image: "/blog-video-results.png",
           imageAlt: "Video marketing analytics showing engagement and lead growth",
         },
@@ -58,6 +63,11 @@ export const blogPosts: BlogPost[] = [
     readTime: 8,
     category: "Industry Insights",
     tags: ["Lead Generation", "AI-Free", "Business Growth"],
+    tldr: [
+      "AI tools prioritize quantity over quality, often flooding you with unqualified, cold leads.",
+      "Sign projects are complex and require human context (budget, timeline, compliance) that bots miss.",
+      "Human-verified lead generation delivers fewer leads but higher conversion rates (30% vs 2%), saving you time and money."
+    ],
     featuredImage: "/blog-qualified-leads.png",
     ogImage: "/blog-qualified-leads.png",
     content: {
@@ -88,7 +98,7 @@ export const blogPosts: BlogPost[] = [
           body: "At SignFlow, we believe in the power of human expertise. Our team doesn't rely on bots or automation. Instead, we:\n\n1. Research your target market manually\n2. Identify businesses that genuinely need signage\n3. Make personal contact to qualify interest\n4. Verify budget and timeline\n5. Deliver only qualified leads to your inbox\n\nEvery lead you receive has been personally vetted by our team. We understand the sign industry, we know what makes a good lead, and we only send you opportunities worth pursuing.\n\nNo spam. No cold contacts. No wasted time. Just qualified leads ready to become your next clients.",
         },
       ],
-      conclusion: "AI has its place in business, but lead generation for sign companies isn't one of them. The complexity of sign projects, the importance of relationships, and the need for qualified prospects all point to one truth: human-driven lead generation delivers better results. If you're ready to stop chasing unqualified leads and start closing more deals, it's time to experience the SignFlow difference.",
+      conclusion: "AI has its place in business, but lead generation for sign companies isn't one of them. The complexity of sign projects, the importance of relationships, and the need for qualified prospects all point to one truth: human-driven lead generation delivers better results. If you're ready to stop chasing unqualified leads and start closing more deals, it's time to experience the SignFlow difference.\n\nOnce you have those leads, you need to impress them. Learn <a href='/blog/how-to-create-videos-for-sign-companies' class='text-primary underline hover:text-primary/80'>how to use video marketing to showcase your best work</a> and close the deal.",
     },
   },
   {
@@ -100,6 +110,11 @@ export const blogPosts: BlogPost[] = [
     readTime: 5,
     category: "Template",
     tags: ["Template", "Standard", "Guide"],
+    tldr: [
+      "This is the summary bullet point 1.",
+      "This is the summary bullet point 2.",
+      "This is the summary bullet point 3."
+    ],
     featuredImage: "/blog-placeholder.png",
     ogImage: "/blog-placeholder.png",
     content: {

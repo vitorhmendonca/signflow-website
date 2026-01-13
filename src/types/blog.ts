@@ -7,6 +7,7 @@ export interface BlogPost {
   readTime: number; // in minutes
   category?: string;
   tags?: string[];
+  tldr?: string[];
   featuredImage?: string;
   ogImage?: string;
   content: BlogContent;

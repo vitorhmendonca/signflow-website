@@ -192,21 +192,26 @@ const Blog = () => {
           <div className="container mx-auto px-6">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 py-3">
               {/* Categories */}
-              <div className="overflow-x-auto no-scrollbar">
-                <div className="flex items-center gap-2 min-w-max">
-                  {categories.map((category) => (
-                    <Button
-                      key={category}
-                      variant={activeCategory === category ? "default" : "ghost"}
-                      size="sm"
-                      onClick={() => setActiveCategory(category)}
-                      className={`rounded-full h-8 px-4 text-xs ${activeCategory === category ? "bg-primary text-primary-foreground hover:bg-primary/90" : "text-slate-600 hover:text-primary hover:bg-primary/5"
-                        }`}
-                    >
-                      {category}
-                    </Button>
-                  ))}
+              {/* Categories */}
+              <div className="relative flex-1 overflow-hidden">
+                <div className="overflow-x-auto no-scrollbar mask-linear-fade">
+                  <div className="flex items-center gap-2 min-w-max pr-8">
+                    {categories.map((category) => (
+                      <Button
+                        key={category}
+                        variant={activeCategory === category ? "default" : "ghost"}
+                        size="sm"
+                        onClick={() => setActiveCategory(category)}
+                        className={`rounded-full h-8 px-4 text-xs ${activeCategory === category ? "bg-primary text-primary-foreground hover:bg-primary/90" : "text-slate-600 hover:text-primary hover:bg-primary/5"
+                          }`}
+                      >
+                        {category}
+                      </Button>
+                    ))}
+                  </div>
                 </div>
+                {/* Scroll Hint Gradient */}
+                <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-white dark:from-slate-900 to-transparent pointer-events-none md:hidden"></div>
               </div>
 
               {/* Sort By */}

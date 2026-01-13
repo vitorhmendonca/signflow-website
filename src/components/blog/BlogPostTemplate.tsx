@@ -372,6 +372,32 @@ const BlogPostTemplate = ({ post }: BlogPostTemplateProps) => {
           </div>
 
           <article className="max-w-4xl mx-auto prose prose-lg prose-slate dark:prose-invert prose-headings:font-bold prose-headings:text-slate-900 dark:prose-headings:text-white prose-p:text-slate-700 dark:prose-p:text-slate-300 prose-a:text-primary hover:prose-a:text-primary/80 prose-strong:text-slate-900 dark:prose-strong:text-white prose-img:rounded-xl prose-img:shadow-lg relative">
+            {/* TL;DR Section */}
+            {post.tldr && post.tldr.length > 0 && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+                className="mb-10 p-6 md:p-8 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border-l-4 border-primary shadow-sm"
+              >
+                <div className="flex items-center gap-2 mb-4">
+                  <span className="font-bold text-lg text-slate-900 dark:text-white uppercase tracking-wider">
+                    TL;DR
+                  </span>
+                  <span className="text-slate-400">|</span>
+                  <span className="text-sm font-medium text-primary">In a Hurry? Read This.</span>
+                </div>
+                <ul className="space-y-3">
+                  {post.tldr.map((point, index) => (
+                    <li key={index} className="flex gap-3 text-slate-700 dark:text-slate-300 text-base leading-relaxed">
+                      <span className="text-primary font-bold mt-0.5">•</span>
+                      <span>{point}</span>
+                    </li>
+                  ))}
+                </ul>
+              </motion.div>
+            )}
+
             {/* Introduction */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -419,9 +445,10 @@ const BlogPostTemplate = ({ post }: BlogPostTemplateProps) => {
                   <h2 className="text-2xl md:text-3xl font-bold mb-5 text-slate-900 dark:text-white tracking-tight">
                     {section.headline}
                   </h2>
-                  <div className="prose prose-lg max-w-none text-slate-700 dark:text-slate-300 leading-relaxed whitespace-pre-line">
-                    {section.body}
-                  </div>
+                  <div
+                    className="prose prose-lg max-w-none text-slate-700 dark:text-slate-300 leading-relaxed whitespace-pre-line"
+                    dangerouslySetInnerHTML={{ __html: section.body }}
+                  />
                   {section.image && (
                     <div className={`my-6 rounded-lg overflow-hidden shadow-md ${index % 3 === 0 ? 'max-w-md' :
                       index % 3 === 1 ? 'max-w-xs float-right ml-6 mb-4' :
@@ -472,9 +499,10 @@ const BlogPostTemplate = ({ post }: BlogPostTemplateProps) => {
                 <h3 className="text-xl md:text-2xl font-bold mb-3 text-slate-900 dark:text-white">
                   Conclusion
                 </h3>
-                <p className="text-base text-slate-700 dark:text-slate-300 leading-relaxed whitespace-pre-line">
-                  {post.content.conclusion}
-                </p>
+                <div
+                  className="text-base text-slate-700 dark:text-slate-300 leading-relaxed whitespace-pre-line"
+                  dangerouslySetInnerHTML={{ __html: post.content.conclusion }}
+                />
               </motion.div>
             )}
           </article>
@@ -489,22 +517,43 @@ const BlogPostTemplate = ({ post }: BlogPostTemplateProps) => {
             >
               <div className="flex items-start gap-6">
                 <div className="flex-shrink-0">
-                  <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center">
-                    <User size={40} className="text-primary" />
+                  <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center overflow-hidden">
+                    {post.author === "Vitor Hugo" ? (
+                      <div className="w-full h-full bg-blue-600 flex items-center justify-center text-white font-bold text-2xl">
+                        VH
+                      </div>
+                    ) : (
+                      <User size={40} className="text-primary" />
+                    )}
                   </div>
                 </div>
                 <div className="flex-1">
                   <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">
                     About {post.author}
                   </h3>
-                  <p className="text-base text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
-                    The SignFlow team has helped 200+ sign companies generate over $5M in qualified leads. With 10+ years of experience in the signage industry, we understand what it takes to grow a successful sign business through proven marketing strategies and AI-free lead generation.
-                  </p>
-                  <div className="flex gap-4 text-sm text-slate-600 dark:text-slate-400">
-                    <span>✓ 200+ Sign Companies Served</span>
-                    <span>✓ $5M+ in Leads Generated</span>
-                    <span>✓ 10+ Years Experience</span>
-                  </div>
+                  {post.author === "Vitor Hugo" ? (
+                    <>
+                      <p className="text-base text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
+                        Vitor is the Lead Strategist at SignFlow. He specializes in helping sign business owners break free from the "referral trap" by building predictable, high-quality lead generation systems that don't rely on AI or spam.
+                      </p>
+                      <div className="flex flex-wrap gap-4 text-sm text-slate-600 dark:text-slate-400">
+                        <span>✓ Lead Generation Strategist</span>
+                        <span>✓ Sign Industry Specialist</span>
+                        <span>✓ ROI Focused</span>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <p className="text-base text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
+                        The SignFlow team has helped 200+ sign companies generate over $5M in qualified leads. With 10+ years of experience in the signage industry, we understand what it takes to grow a successful sign business through proven marketing strategies and AI-free lead generation.
+                      </p>
+                      <div className="flex flex-wrap gap-4 text-sm text-slate-600 dark:text-slate-400">
+                        <span>✓ 200+ Sign Companies Served</span>
+                        <span>✓ $5M+ in Leads Generated</span>
+                        <span>✓ 10+ Years Experience</span>
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
             </motion.div>
