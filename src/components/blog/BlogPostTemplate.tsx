@@ -78,15 +78,30 @@ const BlogPostTemplate = ({ post }: BlogPostTemplateProps) => {
       color: "hover:bg-[#0077b5] hover:text-white"
     },
     {
-      name: "Twitter",
-      icon: Twitter,
+      name: "X (Twitter)",
+      icon: ({ size = 24, ...props }: any) => (
+        <svg
+          viewBox="0 0 24 24"
+          width={size}
+          height={size}
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          {...props}
+        >
+          <path d="M4 4l11.733 16h4.267l-11.733 -16z" />
+          <path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772" />
+        </svg>
+      ),
       url: `https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title)}&url=${encodeURIComponent(currentUrl)}`,
-      color: "hover:bg-[#1DA1F2] hover:text-white"
+      color: "hover:bg-black hover:text-white"
     },
     {
       name: "Facebook",
       icon: Facebook,
-      url: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentUrl)}`,
+      url: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentUrl)}&quote=${encodeURIComponent(post.title)}`,
       color: "hover:bg-[#4267B2] hover:text-white"
     }
   ];
@@ -306,26 +321,6 @@ const BlogPostTemplate = ({ post }: BlogPostTemplateProps) => {
                   <span>{readTime} min read</span>
                 </div>
               </motion.div>
-
-              {/* Tags */}
-              {post.tags && post.tags.length > 0 && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.5 }}
-                  className="flex flex-wrap gap-2 mt-6"
-                >
-                  {post.tags.map((tag) => (
-                    <Link
-                      key={tag}
-                      to={`/blog?search=${encodeURIComponent(tag)}`}
-                      className="px-3 py-1.5 bg-primary/20 text-primary border border-primary/30 rounded-full text-xs font-semibold hover:bg-primary hover:text-white transition-colors"
-                    >
-                      {tag}
-                    </Link>
-                  ))}
-                </motion.div>
-              )}
             </motion.div>
           </div>
         </section>
