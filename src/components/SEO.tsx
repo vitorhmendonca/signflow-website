@@ -14,7 +14,34 @@ const SEO = ({ title, description, canonical, ogImage, keywords, type = "website
         // Update title
         document.title = title;
 
-        // ... (existing code for description/keywords/canonical)
+        // Update meta description
+        let metaDescription = document.querySelector('meta[name="description"]');
+        if (!metaDescription) {
+            metaDescription = document.createElement('meta');
+            metaDescription.setAttribute('name', 'description');
+            document.head.appendChild(metaDescription);
+        }
+        metaDescription.setAttribute('content', description);
+
+        // Update meta keywords
+        if (keywords) {
+            let metaKeywords = document.querySelector('meta[name="keywords"]');
+            if (!metaKeywords) {
+                metaKeywords = document.createElement('meta');
+                metaKeywords.setAttribute('name', 'keywords');
+                document.head.appendChild(metaKeywords);
+            }
+            metaKeywords.setAttribute('content', keywords);
+        }
+
+        // Update canonical link
+        let linkCanonical = document.querySelector('link[rel="canonical"]');
+        if (!linkCanonical) {
+            linkCanonical = document.createElement('link');
+            linkCanonical.setAttribute('rel', 'canonical');
+            document.head.appendChild(linkCanonical);
+        }
+        linkCanonical.setAttribute('href', canonical);
 
         // Update OG tags
         const updateOGTag = (property: string, content: string) => {

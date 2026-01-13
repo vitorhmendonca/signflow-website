@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { toast } from "sonner";
+import { Link, useSearchParams } from "react-router-dom";
 import { Calendar, Clock, User, ArrowRight, Search, Mail, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Header from "@/components/Header";
@@ -9,19 +10,54 @@ import StructuredData from "@/components/StructuredData";
 import { getAllBlogPosts } from "@/data/blogPosts";
 import { format } from "date-fns";
 import OptimizedImage from "@/components/OptimizedImage";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 
 const Blog = () => {
-  const [activeCategory, setActiveCategory] = useState("All");
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const initialCategory = searchParams.get("category") || "All";
+  const initialSearch = searchParams.get("search") || "";
+
+  const [activeCategory, setActiveCategory] = useState(initialCategory);
+  const [searchQuery, setSearchQuery] = useState(initialSearch);
+  const [sortBy, setSortBy] = useState("newest");
+  const [visibleCount, setVisibleCount] = useState(6);
   const [email, setEmail] = useState("");
   const allPosts = getAllBlogPosts();
 
+  const handleSubscribe = () => {
+    if (!email || !email.includes("@")) {
+      toast.error("Please enter a valid email address");
+      return;
+    }
+    toast.success("Welcome aboard! 🚀 You've been subscribed.");
+    setEmail("");
+  };
+
   // Extract unique categories
   const categories = ["All", ...Array.from(new Set(allPosts.map((post) => post.category || "Uncategorized")))];
+
+  // Sync state to URL
+  useEffect(() => {
+    const params: any = {};
+    if (activeCategory !== "All") params.category = activeCategory;
+    if (searchQuery) params.search = searchQuery;
+    setSearchParams(params, { replace: true });
+  }, [activeCategory, searchQuery, setSearchParams]);
+
+  // Reset pagination on filter change
+  useEffect(() => {
+    setVisibleCount(6);
+  }, [activeCategory, searchQuery]);
 
   // Filter posts
   const filteredPosts = allPosts.filter((post) => {
@@ -32,10 +68,25 @@ const Blog = () => {
     return matchesCategory && matchesSearch;
   });
 
+  // Sort posts
+  const sortedPosts = [...filteredPosts].sort((a, b) => {
+    if (sortBy === "newest") {
+      return new Date(b.date).getTime() - new Date(a.date).getTime();
+    } else if (sortBy === "oldest") {
+      return new Date(a.date).getTime() - new Date(b.date).getTime();
+    } else if (sortBy === "az") {
+      return a.title.localeCompare(b.title);
+    } else if (sortBy === "za") {
+      return b.title.localeCompare(a.title);
+    }
+    return 0;
+  });
+
   // Decide view mode
-  const showFeatured = searchQuery === "" && filteredPosts.length > 0;
-  const featuredPost = showFeatured ? filteredPosts[0] : null;
-  const gridPosts = filteredPosts;
+  const showFeatured = searchQuery === "" && sortBy === "newest" && activeCategory === "All" && sortedPosts.length > 0;
+  const featuredPost = showFeatured ? sortedPosts[0] : null;
+  const gridPosts = showFeatured ? sortedPosts.slice(1, visibleCount + 1) : sortedPosts.slice(0, visibleCount);
+  const hasMore = showFeatured ? sortedPosts.length > visibleCount + 1 : sortedPosts.length > visibleCount;
 
   const breadcrumbSchema = {
     "@context": "https://schema.org",
@@ -136,22 +187,43 @@ const Blog = () => {
           </div>
         </section>
 
-        {/* Categories Bar */}
+        {/* Categories & Sort Bar */}
         <section className="border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 sticky top-16 z-30 shadow-sm">
-          <div className="container mx-auto px-6 overflow-x-auto no-scrollbar">
-            <div className="flex items-center gap-2 py-3 min-w-max">
-              {categories.map((category) => (
-                <Button
-                  key={category}
-                  variant={activeCategory === category ? "default" : "ghost"}
-                  size="sm"
-                  onClick={() => setActiveCategory(category)}
-                  className={`rounded-full h-8 px-4 text-xs ${activeCategory === category ? "bg-primary text-primary-foreground hover:bg-primary/90" : "text-slate-600 hover:text-primary hover:bg-primary/5"
-                    }`}
-                >
-                  {category}
-                </Button>
-              ))}
+          <div className="container mx-auto px-6">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 py-3">
+              {/* Categories */}
+              <div className="overflow-x-auto no-scrollbar">
+                <div className="flex items-center gap-2 min-w-max">
+                  {categories.map((category) => (
+                    <Button
+                      key={category}
+                      variant={activeCategory === category ? "default" : "ghost"}
+                      size="sm"
+                      onClick={() => setActiveCategory(category)}
+                      className={`rounded-full h-8 px-4 text-xs ${activeCategory === category ? "bg-primary text-primary-foreground hover:bg-primary/90" : "text-slate-600 hover:text-primary hover:bg-primary/5"
+                        }`}
+                    >
+                      {category}
+                    </Button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Sort By */}
+              <div className="flex items-center gap-2 min-w-[140px]">
+                <span className="text-xs text-slate-500 whitespace-nowrap hidden md:inline">Sort by:</span>
+                <Select value={sortBy} onValueChange={setSortBy}>
+                  <SelectTrigger className="h-8 rounded-full border-slate-200 bg-transparent text-xs focus:ring-primary/20">
+                    <SelectValue placeholder="Sort by" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="newest">Newest First</SelectItem>
+                    <SelectItem value="oldest">Oldest First</SelectItem>
+                    <SelectItem value="az">Title (A-Z)</SelectItem>
+                    <SelectItem value="za">Title (Z-A)</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
           </div>
         </section>
@@ -248,6 +320,50 @@ const Blog = () => {
                 >
                   Clear filters
                 </Button>
+
+                {/* Fallback Recent Posts */}
+                <div className="mt-16 text-left max-w-5xl mx-auto border-t border-slate-100 dark:border-slate-800 pt-12">
+                  <h4 className="text-lg font-bold text-slate-900 dark:text-white mb-6 px-6">
+                    Check out our latest articles instead:
+                  </h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 px-6 text-left">
+                    {allPosts.slice(0, 3).map((post, index) => (
+                      <motion.div
+                        key={post.slug}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5, delay: index * 0.1 }}
+                      >
+                        <Link to={`/blog/${post.slug}`} className="group h-full block">
+                          <Card className="h-full overflow-hidden hover:shadow-xl transition-all duration-300 border-border/50 bg-white dark:bg-slate-900 flex flex-col">
+                            <div className="aspect-video relative overflow-hidden">
+                              {post.featuredImage && (
+                                <OptimizedImage
+                                  src={post.featuredImage}
+                                  alt={post.title}
+                                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                />
+                              )}
+                              {post.category && (
+                                <Badge className="absolute top-4 left-4 bg-white/90 text-slate-900 hover:bg-white border-none shadow-sm backdrop-blur-sm">
+                                  {post.category}
+                                </Badge>
+                              )}
+                            </div>
+                            <CardContent className="p-6 flex-1 flex flex-col">
+                              <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-3 line-clamp-2 group-hover:text-primary transition-colors">
+                                {post.title}
+                              </h3>
+                              <div className="flex items-center text-primary font-semibold text-xs mt-auto">
+                                Read Article <ChevronRight size={14} />
+                              </div>
+                            </CardContent>
+                          </Card>
+                        </Link>
+                      </motion.div>
+                    ))}
+                  </div>
+                </div>
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -302,6 +418,14 @@ const Blog = () => {
                 ))}
               </div>
             )}
+
+            {hasMore && (
+              <div className="mt-12 text-center">
+                <Button variant="outline" size="lg" onClick={() => setVisibleCount(prev => prev + 6)}>
+                  Load More Articles
+                </Button>
+              </div>
+            )}
           </div>
         </section>
 
@@ -329,8 +453,12 @@ const Blog = () => {
                   className="bg-white/10 border-white/20 text-white placeholder:text-white/50 h-12 rounded-lg"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  onKeyDown={(e) => e.key === "Enter" && handleSubscribe()}
                 />
-                <Button className="h-12 px-8 font-semibold bg-primary hover:bg-primary/90 text-white">
+                <Button
+                  onClick={handleSubscribe}
+                  className="h-12 px-8 font-semibold bg-primary hover:bg-primary/90 text-white"
+                >
                   Subscribe
                 </Button>
               </div>
